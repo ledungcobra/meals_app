@@ -11,23 +11,15 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isIos = Platform.isIOS;
-    final PreferredSizeWidget appBar = isIos
-        ? CupertinoNavigationBar(
-            middle: Text(
-              'Meals App',
-              style: const TextStyle(color: Colors.red, fontSize: 20),
-            ),
-          )
-        : AppBar(
-            title: Text("Meals App"),
-            backgroundColor: Colors.green,
-          );
-    final bodyPage = SafeArea(
+    final content = SafeArea(
       child: GridView(
         padding: EdgeInsets.all(10),
         children: DUMMY_CATEGORIES.map((item) {
-          return CategoryItem(title: item.title, color: item.color,id: item.id,);
+          return CategoryItem(
+            title: item.title,
+            color: item.color,
+            id: item.id,
+          );
         }).toList(),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             //Width of item
@@ -39,15 +31,6 @@ class CategoriesScreen extends StatelessWidget {
             mainAxisSpacing: 20),
       ),
     );
-    return isIos
-        ? CupertinoPageScaffold(
-            navigationBar: appBar,
-            child: bodyPage,
-            backgroundColor: Colors.amber[90],
-          )
-        : Scaffold(
-            appBar: appBar,
-            body: bodyPage,
-          );
+    return content;
   }
 }

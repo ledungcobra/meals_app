@@ -9,13 +9,7 @@ Widget AdaptiveScreen(
       //   navBar = Platform.isIOS? CupertinoNavigationBar(): AppBar();
       // }
      
-  var widget =  Platform.isIOS
-      ? CupertinoPageScaffold(
-          child: body,
-          navigationBar: navBar as ObstructingPreferredSizeWidget,
-          backgroundColor: backgroundColor,
-        )
-      : Scaffold(
+  var widget =Scaffold(
           body: body,
           backgroundColor: backgroundColor,
           appBar: navBar ,
