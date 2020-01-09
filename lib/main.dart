@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:meals_app/screens/category_meals_screen.dart';
+import 'package:meals_app/screens/meal_detail_screen.dart';
 import './screens/categories_screen.dart';
 
 void main() => runApp(MyApp());
@@ -22,9 +25,17 @@ class MyApp extends StatelessWidget {
                 fontSize: 20,
                 fontFamily: 'RobotoCondensed',
                 fontWeight: FontWeight.bold,
-                
               ))),
       home: Material(child: CategoriesScreen()),
+      routes: {
+        CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
+        MealDetailScreen.routeName:(ctx)=>MealDetailScreen()
+      },
+      initialRoute: '/',
+      onGenerateRoute: (settings){
+      
+        return CupertinoPageRoute(builder: (ctx)=>CategoryMealsScreen());
+      },
     );
   }
 }
