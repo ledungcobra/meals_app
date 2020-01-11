@@ -1,60 +1,77 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meals_app/dummy_categories.dart';
-import 'package:meals_app/models/meal.dart';
-import 'package:meals_app/widgets/adaptive_widget.dart';
+import '../models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
   //const MealDetailScreen({Key key}) : super(key: key);
   static const String routeName = '/MealDetailScreen';
+  final Function toggleFavorite;
+  final Function isFavorite;
+  MealDetailScreen(this.toggleFavorite, this.isFavorite);
 
   @override
   Widget build(BuildContext context) {
-    final String id = ModalRoute.of(context).settings.arguments as String;
-    final meal = DUMMY_MEALS.firstWhere((item) => item.id == id);
+    final String mealId = ModalRoute.of(context).settings.arguments as String;
+    final meal = DUMMY_MEALS.firstWhere((item) => item.id == mealId);
 
-    return AdaptiveScreen(
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            imageWidget(meal),
-            buildSectionWidget(context, 'Ingredients'),
-            buildListViewOf(meal.ingredients),
-            buildSectionWidget(context, 'Steps'),
-            SingleChildScrollView(
-              child: buildContainer(
-                height: 400,
-                  child: ListView.builder(
-                itemCount: meal.steps.length,
-                itemBuilder: (ctx, index) => Container(
-                    margin: EdgeInsets.symmetric(vertical: 1),
-                    child: Column(
-                      children: <Widget>[
-                        ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.purple,
-                            maxRadius: 25,
-                            minRadius: 20,
-                            child: Text('#${index + 1}'),
-                          ),
-                          title: Text(
-                            '${meal.steps[index]}',
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic, color: Colors.black),
-                          ),
-                        ),
-                        Divider(color: Colors.black, thickness:0.2,)
-                      ],
+    return Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              imageWidget(meal),
+              buildSectionWidget(context, 'Ingredients'),
+              buildListViewOf(meal.ingredients),
+              buildSectionWidget(context, 'Steps'),
+              SingleChildScrollView(
+                child: buildContainer(
+                    height: 400,
+                    child: ListView.builder(
+                      itemCount: meal.steps.length,
+                      itemBuilder: (ctx, index) => Container(
+                          margin: EdgeInsets.symmetric(vertical: 1),
+                          child: Column(
+                            children: <Widget>[
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.purple,
+                                  maxRadius: 25,
+                                  minRadius: 20,
+                                  child: Text('#${index + 1}'),
+                                ),
+                                title: Text(
+                                  '${meal.steps[index]}',
+                                  style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      color: Colors.black),
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.black,
+                                thickness: 0.2,
+                              )
+                            ],
+                          )),
                     )),
-              )),
-            )
-          ],
+              )
+            ],
+          ),
         ),
-      ),
-      navBar: CupertinoNavigationBar(
-        middle: Text('${meal.title}'),
-      ),
-    );
+        appBar: AppBar(
+          title: Text('${meal.title}'),
+        ),
+        floatingActionButton:
+            // FloatingActionButton(child: Icon(Icons.delete),onPressed: (){
+
+            //   Navigator.of(context).pop(mealId);
+
+            // },),
+            FloatingActionButton(
+          child: isFavorite(mealId) ? Icon(Icons.star) : Icon(Icons.star_border),
+          onPressed: () {
+            toggleFavorite(mealId);
+          },
+        ));
   }
 
   Container imageWidget(Meal meal) {
